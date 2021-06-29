@@ -53,6 +53,7 @@ class Queue
 			delete start;
 			start = buffer.prev;
 		}
+		return buffer.data;
 	}
 	ostream& operator << (ostream& stream)
 	{
