@@ -1,41 +1,67 @@
-template <typename T>
-class Node
-{
-public:
-	T data;
-	Node* prev;
-};
+#include <iostream>
+
+using namespace std;
+
 
 template <typename T>
 class Queue
 {
-	<T> Node* start;
-	<T> Node* end;
+	struct Node
+	{
+		T data;
+		Node* prev;
+	};
+	Node* start;
+	Node* end;
 	Queue()
 	{
-		start = new Node();
-		end = new Node();
+		start = end = nullptr;
 	}
 	~Queue()
 	{
+		if (start != nullptr)
+		{
+			Node* pv = start;
+			while (pv)
+			{
+				pv = pv->prev;
+				delete start;
+				start = pv;
+			}
+		}
 	}
 	void push(T in)
 	{
-		end->prev = new Node();
-		end->prev->data = in;
-		end = end.prev;
+		if (end == nullptr) 
+		{
+			start = end = new Node();
+			end->data = in;
+		}
+		else
+		{
+			end->prev = new Node();
+			end->prev->data = in;
+			end = end.prev;
+		}
+
 	}
 	T pull()
 	{
 		if (start != nullptr)
 		{
-			<T> Node buffer = *start;
+			Node buffer = *start;
 			delete start;
 			start = buffer.prev;
 		}
 	}
 	ostream& operator << (ostream& stream)
 	{
-		stream << this->pull() << endl;
+		Node* pv = start;
+		while (pv)
+		{
+			stream << pv.data << "\t";
+			pv = pv->next;
+		}
+		return stream;
 	}
 };
